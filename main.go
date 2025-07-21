@@ -2,12 +2,11 @@ package main
 
 import (
 	"log"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-	"github.com/mcharolabs/go-crud/controllers"
 	"github.com/mcharolabs/go-crud/database"
+	"github.com/mcharolabs/go-crud/routes"
 	"github.com/mcharolabs/go-crud/utils/logger"
 )
 
@@ -28,21 +27,11 @@ func init() {
 }
 
 func main() {
-	router := gin.Default()
-	router.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
-	})
+	router := gin.New()
 
-	bookRoutes := router.Group("/books")
-	{
-		bookRoutes.DELETE("/:id", controllers.DeleteBook)
-		bookRoutes.PATCH("/:id", controllers.UpdateBook)
-		bookRoutes.GET("/:id", controllers.GetBook)
-		bookRoutes.POST("/", controllers.CreateBook)
-		bookRoutes.GET("/", controllers.GetAllBooks)
-	}
+	router.Use(gin.Logger())
+
+	routes.BookRouter(router)
 
 	router.Run()
 }

@@ -23,3 +23,7 @@ func (b *Book) BeforeCreate(tx *gorm.DB) (err error) {
 	}
 	return
 }
+
+func (Book) TableName() string {
+	return "books"
+}

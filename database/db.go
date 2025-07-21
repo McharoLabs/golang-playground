@@ -56,7 +56,10 @@ func Connect() error {
 	}
 
 	err = DB.AutoMigrate(&models.Book{})
-
+	if err != nil {
+		return err
+	}
+	err = DB.AutoMigrate(&models.User{})
 	if err != nil {
 		return err
 	}
