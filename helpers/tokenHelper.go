@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"errors"
 	"os"
 	"time"
 
@@ -64,4 +65,26 @@ func GenerateTokenPair(details SignedDetails) (accessToken string, refreshToken 
 	}
 
 	return accessToken, refreshToken, nil
+}
+
+func ValidateToken(tokenString string) (SignedDetails, error) {
+	var claims SignedDetails
+
+	token, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
+		return jwtSecret, nil
+	})
+
+	if err != nil {
+		return claims, err
+	}
+
+	if !token.Valid {
+		return claims, errors.New("invalid token")
+	}
+
+	if claims.ExpiresAt != nil && claims.ExpiresAt.Time.Before(time.Now()) {
+		return claims, errors.New("token expired")
+	}
+
+	return claims, nil
 }

@@ -20,3 +20,14 @@ func GetJSONTag(model any, fieldName string) string {
 	}
 	return fieldName
 }
+
+// ValidationErrors holds multiple field validation errors
+type ValidationErrors map[string]string
+
+func (v ValidationErrors) Error() string {
+	var sb strings.Builder
+	for field, msg := range v {
+		sb.WriteString(field + ": " + msg + "; ")
+	}
+	return sb.String()
+}

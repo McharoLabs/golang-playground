@@ -33,6 +33,7 @@ func main() {
 
 	routes.BookRouter(router)
 	routes.AuthRoute(router)
+	routes.UserRoutes(router)
 
 	router.Run()
 }

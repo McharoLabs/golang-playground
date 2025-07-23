@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/gin-gonic/gin"
+	"github.com/mcharolabs/go-crud/constants"
 )
 
 func MatchUserTypeToUUID(c *gin.Context, id string) (err error) {
@@ -11,7 +12,7 @@ func MatchUserTypeToUUID(c *gin.Context, id string) (err error) {
 	uid := c.GetString("uid")
 	err = nil
 
-	if userType == "USER" && uid != userType {
+	if userType == string(constants.RoleUser) && uid != userType {
 		err = errors.New("unauthorized to access this resource")
 		return err
 	}
