@@ -32,6 +32,7 @@ func main() {
 	router.Use(gin.Logger())
 
 	routes.BookRouter(router)
+	routes.AuthRoute(router)
 
 	router.Run()
 }
